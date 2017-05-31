@@ -1,4 +1,6 @@
-# Name Gender Classifier
+# Name Gender Classifier  
+![built with](https://img.shields.io/badge/Built%20with-Python%203-green.svg)
+
 A gender classifier based on first names.  
 This classifier implements a single layer perceptron as main classifier.  
 It uses final trigrams and character frequency as features into the classifier.
