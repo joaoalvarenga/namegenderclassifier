@@ -1,5 +1,3 @@
-*.npy
 *.pyc
-*.model
 build/
 iml/
