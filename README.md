@@ -14,7 +14,7 @@ F1: 0.754929
 
 # Quick start
 ## Requirements
-This project uses Python 3 specifications
+This project uses Python 3 specifications  
 Install all project dependencies via pip after cloning project
 ```
 $ python setup.py install
