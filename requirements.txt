@@ -1,0 +1,6 @@
+numpy
+scipy
+sklean
+pandas
+tensorflow
+keras

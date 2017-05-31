@@ -53,11 +53,8 @@ class GenderClassifier(object):
 
 
     def __load_dataset(self, dataset, train_split):
-        df = pandas.read_csv(dataset)
-
-        data = df.values
-        names = df.values[:, 0]
-        genders = df.values[:, 1]
+        names = dataset[:, 0]
+        genders = dataset[:, 1]
 
         text = ''.join(names)
         self.__chars = sorted(list(set(text)))
@@ -72,15 +69,15 @@ class GenderClassifier(object):
         self.__classes_indexes = dict((c, i) for i, c in enumerate(self.__classes))
         self.__indexes_classes = dict((i, c) for i, c in enumerate(self.__classes))
 
-        train_size = int(len(df)*train_split)
-        test_size = len(df) - train_size
+        train_size = int(len(dataset)*train_split)
+        test_size = len(dataset) - train_size
 
-        np.random.shuffle(data) # a little bit of magic
+        np.random.shuffle(dataset) # a little bit of magic
         
         train_data = []
         test_data = []
         gender_bool = False
-        for name, gender in data.tolist():
+        for name, gender in dataset.tolist():
             x = self.__parse_name(name)
             if len(test_data) < test_size:
                 if (gender_bool and gender == 'F') or ((not gender_bool) and gender == 'M'): # 50-50 in validation set
