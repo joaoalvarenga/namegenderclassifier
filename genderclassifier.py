@@ -5,6 +5,7 @@ from keras.layers import Dense
 from keras.models import load_model, Sequential
 from keras.optimizers import Adam
 from keras.utils.np_utils import to_categorical
+from sklearn.metrics import confusion_matrix as sklearn_confusion_matrix
 
 class GenderClassifier(object):
     def __init__(self):
@@ -33,8 +34,6 @@ class GenderClassifier(object):
 
         self.__classes_indexes = dict((c, i) for i, c in enumerate(self.__classes))
         self.__indexes_classes = dict((i, c) for i, c in enumerate(self.__classes))
-
-
 
     def save_model(self, model_filename):
         self.__model.save("%s.model" % model_filename)
@@ -126,28 +125,26 @@ class GenderClassifier(object):
         tn = 0
         fp = 0
         fn = 0
-        print(predictions)
-        confusion_matrix = [[0,0],[0,0]]
-        for i in range(len(predictions)):
+        confusion_matrix = sklearn_confusion_matrix(dataset[:,1], predictions, labels=self.__classes)
 
+        precisions = []
+        recalls = []
+        accuracies = []
 
-            gender = dataset[i][1]
-            gender_pred = predictions[i]
+        for gender in self.__classes:
+            idx = self.__classes_indexes[gender]
+            precision = 1
+            recall = 1
+            if np.sum(confusion_matrix[idx,:]) > 0:
+                precision = confusion_matrix[idx][idx]/np.sum(confusion_matrix[idx,:])
+            if np.sum(confusion_matrix[:, idx]) > 0:
+                recall = confusion_matrix[idx][idx]/np.sum(confusion_matrix[:, idx])
+            precisions.append(precision)
+            recalls.append(recall)
 
-            if gender == gender_pred:
-                if gender == 'F':
-                    tp +=1s
-                else:
-                    tn +=1
-            else:
-                if gender == 'F':
-                    fn +=1
-                else:
-                    fp +=1
-
-        precision = tp/float(tp+tn)
-        recall = tp/float(tp+fn)
-        accuracy = (tp+tn)/float(tp+tn+fp+fn)
-        f1 = (2*(precison+recall))/(precision+recall)
+        precision = np.mean(precisions)
+        recall = np.mean(recalls)
+        f1 = (2*(precision*recall))/float(precision+recall)
+        accuracy = np.sum(confusion_matrix.diagonal())/float(np.sum(confusion_matrix))
 
         return precision, recall, accuracy, f1
