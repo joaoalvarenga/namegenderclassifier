@@ -20,7 +20,7 @@ class GenderClassifier(object):
         self.__trigrams = None
         self.__classes = None
 
-    def load_model(self, model_filename):
+    def load(self, model_filename):
         self.__model = load_model("%s.model" % model_filename)
         self.__chars = np.load("%s.cvocab.npy" % model_filename).tolist()
         self.__trigrams = np.load("%s.tvocab.npy" % model_filename).tolist()
@@ -35,7 +35,7 @@ class GenderClassifier(object):
         self.__classes_indexes = dict((c, i) for i, c in enumerate(self.__classes))
         self.__indexes_classes = dict((i, c) for i, c in enumerate(self.__classes))
 
-    def save_model(self, model_filename):
+    def save(self, model_filename):
         self.__model.save("%s.model" % model_filename)
         np.save("%s.tvocab" % model_filename, np.asarray(self.__trigrams))
         np.save("%s.cvocab" % model_filename, np.asarray(self.__chars))
@@ -120,11 +120,6 @@ class GenderClassifier(object):
     
     def evaluate(self, dataset):
         predictions = self.predict(dataset[:,0])
-
-        tp = 0
-        tn = 0
-        fp = 0
-        fn = 0
         confusion_matrix = sklearn_confusion_matrix(dataset[:,1], predictions, labels=self.__classes)
 
         precisions = []

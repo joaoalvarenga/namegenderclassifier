@@ -1,0 +1,5 @@
+README.md
+LICENSE
+setup.py
+genderclassifier/__init__.py
+genderclassifier/genderclassifier.py
