@@ -3,7 +3,7 @@
 
 A gender classifier based on first names.  
 This classifier implements a single layer perceptron as main classifier.  
-It uses final trigrams and character frequency as features into the classifier.
+It uses name's last 3-gram and character frequency as features into the classifier.
 
 ## Dataset
 With brazilian names dataset, my current numbers are:
